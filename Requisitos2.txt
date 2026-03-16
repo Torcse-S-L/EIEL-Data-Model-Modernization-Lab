@@ -1,0 +1,277 @@
+1
+SERVICIO DE ACTUALIZACIÓN Y OPTIMIZACIÓN
+DEL MODELO DE DATOS DE LA EIEL
+(EQUIPAMIENTOS E INFRAESTRUCTURAS DE LAS
+ENTIDADES LOCALES)
+PLIEGO DE PRESCRIPCIONES TÉCNICAS
+1. DEFINICIÓN Y OBJETO DEL TRABAJO
+Definición y Objeto del Trabajo
+El presente pliego tiene por objeto la contratación de un servicio de asistencia técnica
+especializada para la revisión, rediseño y optimización del modelo de base de datos
+de la Encuesta de Infraestructuras y Equipamientos Locales (EIEL) gestionada por
+la Diputación de Málaga.
+La Diputación Provincial de Málaga es la administración competente para la
+recopilación, mantenimiento y actualización de la información geoespacial relativa a
+las infraestructuras y equipamientos municipales de los municipios de menos de
+20.000 habitantes de la provincia, en el marco de la Encuesta de Infraestructuras y
+Equipamientos Locales.
+Esta información constituye un inventario georreferenciado de carácter estratégico,
+cuya actualización periódica es obligatoria y cuya remisión anual al Ministerio
+competente debe realizarse mediante la generación de una geodatabase normalizada
+con todos los datos actualizados.
+Actualmente la gestión de estos datos se realiza mediante:
+ Una base de datos geoespacial centralizada basada en PostgreSQL/PostGIS.
+ La aplicación web SITMAP, utilizada para la edición y mantenimiento de la
+información.
+ El plugin EIEL para QGIS, que permite la edición y actualización de los datos
+por parte de técnicos mediante herramientas SIG de escritorio.
+Tras varios años de evolución del sistema, el modelo de datos ha ido creciendo y
+adaptándose a nuevas necesidades funcionales, lo que ha provocado:
+ existencia de tablas duplicadas o redundantes
+Hash: 4d37320862758801746c487cb3eac2dcd6bc0708575d8ef074305c02409f76612bfff607245ff0f26c95e65b989debf6a9d11d14bd18f08352a53df59bc9b336 | PÁG. 1 DE 9
+FIRMANTE NIF/CIF FECHA Y HORA
+JUAN JIMENEZ MILAN (JEFE SECCIÓN DESARROLLO) ****318** 26/03/2026 14:15:39 CET
+CÓDIGO CSV URL DE VALIDACIÓN
+22c8b5fb226aac0a8f8fd1b2559a61caa6448a2b https://sede.malaga.es
+2
+ estructuras de datos parcialmente inconsistentes
+ relaciones entre tablas poco optimizadas
+ consultas complejas necesarias para el funcionamiento de las aplicaciones
+ dificultades para el mantenimiento y evolución del sistema
+Por ello se considera necesario realizar una revisión técnica completa del modelo de
+datos, con el objetivo de mejorar la coherencia estructural, la eficiencia de
+almacenamiento, la calidad de los datos y el rendimiento de las aplicaciones que
+utilizan esta información.
+Los objetivos del proyecto son:
+ Analizar la estructura actual de la base de datos EIEL.
+ Detectar redundancias, inconsistencias y estructuras mejorables.
+ Rediseñar el modelo de datos para optimizar su estructura.
+ Simplificar las relaciones entre entidades.
+ Mejorar el rendimiento de consultas y servicios asociados.
+ Facilitar la interoperabilidad con el modelo requerido por el Ministerio.
+ Garantizar la compatibilidad con las aplicaciones existentes (SITMAP y plugin
+EIEL de QGIS).
+2. ALCANCE DEL SERVICIO
+El alcance funcional incluye los siguientes elementos:
+2.1 Análisis del modelo de datos existente
+Se realizará un análisis técnico detallado de la base de datos actual que gestiona la
+información de la EIEL, incluyendo:
+ Inventario completo de tablas, vistas y relaciones.
+ Identificación de estructuras redundantes o duplicadas.
+ Análisis de dependencias entre tablas.
+ Evaluación de consultas utilizadas por las aplicaciones existentes.
+ Identificación de posibles problemas de normalización de datos.
+Este análisis permitirá identificar puntos críticos y oportunidades de mejora en la
+estructura de datos.
+Hash: 4d37320862758801746c487cb3eac2dcd6bc0708575d8ef074305c02409f76612bfff607245ff0f26c95e65b989debf6a9d11d14bd18f08352a53df59bc9b336 | PÁG. 2 DE 9
+FIRMANTE NIF/CIF FECHA Y HORA
+JUAN JIMENEZ MILAN (JEFE SECCIÓN DESARROLLO) ****318** 26/03/2026 14:15:39 CET
+CÓDIGO CSV URL DE VALIDACIÓN
+22c8b5fb226aac0a8f8fd1b2559a61caa6448a2b https://sede.malaga.es
+3
+2.2 Rediseño del modelo de datos
+A partir del análisis realizado, se definirá un nuevo modelo lógico y físico de base de
+datos, orientado a:
+ mejorar la normalización del modelo
+ reducir redundancias
+ optimizar relaciones entre entidades
+ simplificar consultas
+ mejorar el rendimiento general del sistema
+El rediseño deberá tener en cuenta:
+ la estructura requerida para la generación de la geodatabase oficial remitida al
+Ministerio
+ la compatibilidad con los sistemas existentes
+ la facilidad de mantenimiento futuro del sistema
+2.3 Optimización del almacenamiento de datos
+El adjudicatario deberá proponer y aplicar mejoras orientadas a:
+ reorganización de tablas
+ eliminación de tablas innecesarias
+ reorganización de relaciones entre entidades
+ mejora de índices espaciales y alfanuméricos
+ optimización del almacenamiento geoespacial
+Todo ello con el objetivo de mejorar la eficiencia del sistema y reducir la complejidad
+estructural existente.
+2.4 Adaptación de consultas y estructuras auxiliares
+La optimización del modelo de datos podrá requerir:
+ modificación de vistas existentes
+ adaptación de consultas SQL utilizadas por las aplicaciones
+ creación de vistas de compatibilidad si fuera necesario
+ reorganización de estructuras de soporte utilizadas por SITMAP o por el plugin
+EIEL de QGIS
+Hash: 4d37320862758801746c487cb3eac2dcd6bc0708575d8ef074305c02409f76612bfff607245ff0f26c95e65b989debf6a9d11d14bd18f08352a53df59bc9b336 | PÁG. 3 DE 9
+FIRMANTE NIF/CIF FECHA Y HORA
+JUAN JIMENEZ MILAN (JEFE SECCIÓN DESARROLLO) ****318** 26/03/2026 14:15:39 CET
+CÓDIGO CSV URL DE VALIDACIÓN
+22c8b5fb226aac0a8f8fd1b2559a61caa6448a2b https://sede.malaga.es
+4
+Estas actuaciones deberán garantizar que las aplicaciones existentes continúen
+funcionando correctamente con el nuevo modelo de datos.
+2.5 Documentación del modelo de datos
+El adjudicatario deberá generar una documentación técnica completa que incluya:
+ modelo conceptual
+ modelo lógico
+ modelo físico
+ descripción de tablas y relaciones
+ diccionario de datos
+ procedimientos de mantenimiento
+La documentación deberá permitir al equipo técnico de la Diputación comprender,
+mantener y evolucionar el sistema de forma autónoma.
+3. REQUISITOS TÉCNICOS
+3.1 Arquitectura tecnológica
+La solución deberá ser plenamente compatible con la infraestructura tecnológica existente
+en la Diputación de Málaga, basada en:
+ PostgreSQL
+ PostGIS
+ aplicaciones web de edición geoespacial
+ herramientas SIG de escritorio (QGIS)
+Las soluciones propuestas deberán basarse en tecnologías abiertas y estándares
+ampliamente utilizados en entornos SIG.
+3.2 Compatibilidad con aplicaciones existentes
+El nuevo modelo de datos deberá garantizar la compatibilidad con:
+ la aplicación web SITMAP
+Hash: 4d37320862758801746c487cb3eac2dcd6bc0708575d8ef074305c02409f76612bfff607245ff0f26c95e65b989debf6a9d11d14bd18f08352a53df59bc9b336 | PÁG. 4 DE 9
+FIRMANTE NIF/CIF FECHA Y HORA
+JUAN JIMENEZ MILAN (JEFE SECCIÓN DESARROLLO) ****318** 26/03/2026 14:15:39 CET
+CÓDIGO CSV URL DE VALIDACIÓN
+22c8b5fb226aac0a8f8fd1b2559a61caa6448a2b https://sede.malaga.es
+5
+ el plugin EIEL de QGIS
+ los procesos de generación de la geodatabase oficial remitida al Ministerio
+En caso de que el rediseño del modelo implique cambios estructurales relevantes,
+deberán definirse mecanismos que permitan la transición controlada hacia el nuevo
+modelo.
+3.3 Calidad y consistencia de los datos
+Las actuaciones deberán incluir mecanismos orientados a mejorar:
+ la integridad de los datos
+ la coherencia entre tablas
+ la validación de relaciones entre entidades
+ la eliminación de redundancias
+3.4 Capacidad técnica mínima del adjudicatario
+Con el fin de garantizar la correcta ejecución del contrato, los licitadores deberán
+acreditar en su oferta que disponen de la capacidad técnica necesaria para el desarrollo de
+los trabajos descritos.
+A tal efecto, deberán incluir la siguiente documentación:
+1. Declaración responsable
+Declaración responsable en la que se indique que el licitador dispone de experiencia y
+medios técnicos suficientes para la ejecución del contrato.
+2. Relación de trabajos realizados
+Relación de los principales trabajos realizados en los últimos años relacionados con el
+objeto del contrato, indicando:
+ Descripción del proyecto
+ Tecnologías empleadas
+ Cliente (público o privado)
+Hash: 4d37320862758801746c487cb3eac2dcd6bc0708575d8ef074305c02409f76612bfff607245ff0f26c95e65b989debf6a9d11d14bd18f08352a53df59bc9b336 | PÁG. 5 DE 9
+FIRMANTE NIF/CIF FECHA Y HORA
+JUAN JIMENEZ MILAN (JEFE SECCIÓN DESARROLLO) ****318** 26/03/2026 14:15:39 CET
+CÓDIGO CSV URL DE VALIDACIÓN
+22c8b5fb226aac0a8f8fd1b2559a61caa6448a2b https://sede.malaga.es
+6
+Se comprobará especialmente la experiencia en:
+ Modelado y diseño de bases de datos relacionales
+ Bases de datos geoespaciales PostgreSQL/PostGIS
+ Optimización de consultas SQL y rendimiento
+ Reorganización de estructuras de datos complejas
+ Sistemas de información geográfica (GIS)
+ En sistemas EIEL GIS(equipamientos y infraestructuras de entidades locales)
+3. Descripción técnica de la solución
+Breve memoria técnica (máximo 2-3 páginas) en la que se describa:
+ Enfoque de análisis del modelo de datos existente
+ Estrategia de rediseño y normalización del modelo
+ Propuesta de optimización de relaciones, índices y consultas
+ Mecanismos para garantizar la compatibilidad con SITMAP y plugin EIEL de la
+Diputación de Málaga.
+ Procedimiento de migración o adaptación al nuevo modelo
+4. Perfil técnico
+Descripción del perfil del técnico o equipo que ejecutará el trabajo, indicando experiencia
+en:
+ Modelización de bases de datos
+ PostgreSQL/PostGIS
+ SQL avanzado
+ Sistemas GIS y tratamiento de datos geoespaciales
+⚠ Cláusula de exclusión
+Se excluirán aquellas ofertas que no acrediten adecuadamente la capacidad técnica
+mínima exigida para la ejecución del contrato.
+Hash: 4d37320862758801746c487cb3eac2dcd6bc0708575d8ef074305c02409f76612bfff607245ff0f26c95e65b989debf6a9d11d14bd18f08352a53df59bc9b336 | PÁG. 6 DE 9
+FIRMANTE NIF/CIF FECHA Y HORA
+JUAN JIMENEZ MILAN (JEFE SECCIÓN DESARROLLO) ****318** 26/03/2026 14:15:39 CET
+CÓDIGO CSV URL DE VALIDACIÓN
+22c8b5fb226aac0a8f8fd1b2559a61caa6448a2b https://sede.malaga.es
+7
+4. INSTRUCCIONES A LOS TÉCNICOS DE LA DIPUTACIÓN Y ENTREGA DE
+DOCUMENTACIÓN
+El adjudicatario deberá proporcionar:
+• Manual técnico completo del modelo de datos resultante, incluyendo la descripción de
+la arquitectura de la base de datos y su organización estructural.
+• Documentación detallada del esquema de base de datos, incluyendo tablas, relaciones,
+claves primarias y foráneas, índices y estructuras espaciales implementadas.
+• Diccionario de datos completo con la descripción funcional de los campos y entidades
+que componen el modelo de datos de la EIEL.
+• Documentación de las consultas, vistas y procedimientos SQL implementados o
+modificados durante el proceso de optimización.
+• Procedimiento técnico para la migración y reorganización de los datos existentes
+hacia el nuevo modelo de datos, garantizando la integridad de la información.
+• Documentación de los criterios de optimización aplicados, incluyendo reorganización
+de tablas, eliminación de redundancias y mejora de índices.
+• Instrucciones técnicas para la administración, mantenimiento y evolución futura del
+modelo de datos.
+La documentación deberá permitir que el equipo técnico del Servicio de Desarrollo GIS
+de la Diputación de Málaga pueda comprender, mantener y evolucionar el modelo de
+datos de la EIEL de forma autónoma, así como garantizar su correcta integración con
+las aplicaciones existentes, tales como la aplicación web SITMAP y el plugin EIEL
+para QGIS.
+5. DIRECCIÓN Y CONTROL DE LOS TRABAJOS
+La dirección técnica será responsabilidad del equipo de Desarrollo Tecnológico del
+Servicio de Información Territorial de la Diputación de Málaga, quien supervisará la
+calidad técnica, el cumplimiento del alcance y la correcta implantación del sistema.
+Hash: 4d37320862758801746c487cb3eac2dcd6bc0708575d8ef074305c02409f76612bfff607245ff0f26c95e65b989debf6a9d11d14bd18f08352a53df59bc9b336 | PÁG. 7 DE 9
+FIRMANTE NIF/CIF FECHA Y HORA
+JUAN JIMENEZ MILAN (JEFE SECCIÓN DESARROLLO) ****318** 26/03/2026 14:15:39 CET
+CÓDIGO CSV URL DE VALIDACIÓN
+22c8b5fb226aac0a8f8fd1b2559a61caa6448a2b https://sede.malaga.es
+8
+6. PLAZO
+El plazo de ejecución se establecerá en el contrato, estimándose un período de 3 meses
+desde la adjudicación.
+7. PRECIO
+El presupuesto estimado para el proyecto de actualización BD EIEL es de:
+13.490€ (sin IVA)
+Málaga, a fecha de firma electrónica
+Hash: 4d37320862758801746c487cb3eac2dcd6bc0708575d8ef074305c02409f76612bfff607245ff0f26c95e65b989debf6a9d11d14bd18f08352a53df59bc9b336 | PÁG. 8 DE 9
+FIRMANTE NIF/CIF FECHA Y HORA
+JUAN JIMENEZ MILAN (JEFE SECCIÓN DESARROLLO) ****318** 26/03/2026 14:15:39 CET
+CÓDIGO CSV URL DE VALIDACIÓN
+22c8b5fb226aac0a8f8fd1b2559a61caa6448a2b https://sede.malaga.es
+DOCUMENTO ELECTRÓNICO
+CÓDIGO DE VERIFICACIÓN DEL DOCUMENTO ELECTRÓNICO
+22c8b5fb226aac0a8f8fd1b2559a61caa6448a2b
+Dirección de verificación del documento: https://sede.malaga.es
+Hash del documento: 4d37320862758801746c487cb3eac2dcd6bc0708575d8ef074305c02409f76612bfff607245ff0f26c95e
+65b989debf6a9d11d14bd18f08352a53df59bc9b336
+Version NTI: http://administracionelectronica.gob.es/ENI/XSD/v1.0/documento-e
+Identificador: ES_LA0007600_2026_000000000000000000000026375891
+Órgano: L02000029
+Fecha de captura: 26/03/2026 14:15:12
+Origen: Administración
+Estado elaboración: Original
+Formato: PDF
+Tipo Documental: Otros
+Tipo Firma: XAdES internally detached signature
+Valor CSV: 22c8b5fb226aac0a8f8fd1b2559a61caa6448a2b
+Regulación CSV: Decreto 3628/2017 de 20-12-2017
+METADATOS ENI DEL DOCUMENTO:
+Código QR para validación en sede
+Código EAN-128 para validación en sede
+Ordenanza reguladora del uso de medios electrónicos en el ámbito de la Diputación Provincial de Málaga:
+https://sede.malaga.es/normativa/ordenanza_reguladora_uso_medios_electronicos.pdf
+Política de firma electrónica y de certificados de la Diputación Provincial de Málaga y del marco preferencial para el sector
+público provincial (texto consolidado):
+https://sede.malaga.es/politica_de_firma_AGE_2012_Anexo_1.pdf
+Procedimiento de creación y utilización del sello electrónico de órgano de la Hacienda Electrónica Provincial:
+https://sede.malaga.es/normativa/procedimiento_creacion_utilizacion_sello_electronico.pdf
+Acuerdo de adhesión de la Excma. Diputación Provincial de Málaga al convenio de colaboración entre la Administración General del
+Estado (MINHAP) y la Comunidad Autónoma de Andalucía para la prestación mutua de soluciones básicas de Administración Electrónica
+de fecha 11 de mayo de 2016:
+https://sede.malaga.es/normativa/ae_convenio_j_andalucia_MINHAP_soluciones_basicas.pdf
+Aplicación del sistema de Código Seguro de Verificación (CSV) en el ámbito de la Diputación Provincial de Málaga:
+https://sede.malaga.es/normativa/decreto_CSV.pdf
+Documento ENI utilizando la herramienta tecnológica INSIDE perteneciente al Ministerio de Hacienda y Función Pública (repositorio CTT) | PÁG. 9 DE 9
