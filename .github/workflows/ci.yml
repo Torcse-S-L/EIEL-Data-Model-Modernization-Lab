@@ -1,0 +1,39 @@
+name: CI - EIEL Model Validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate YAML
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: >-
+            docker-compose.yml
+            .github/workflows/ci.yml
+          config_data: |
+            extends: default
+            rules:
+              line-length:
+                max: 180
+
+      - name: Validate docker compose
+        run: docker compose config --quiet
+
+      - name: Start lab
+        run: docker compose up -d
+
+      - name: Apply migrations
+        run: bash scripts/run_migrations.sh
+
+      - name: Run migration tests
+        run: bash tests/test_migration.sh
