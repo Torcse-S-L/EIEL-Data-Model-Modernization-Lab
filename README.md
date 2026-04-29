@@ -1,96 +1,87 @@
 # EIEL Data Model Modernization Lab
 
-Plataforma demostrable para analizar, rediseñar y validar la modernización del modelo de datos EIEL sobre **PostgreSQL/PostGIS**, con foco en la compatibilidad con aplicaciones existentes y la generación de entregables técnicos reutilizables en una licitación.
+[![CI — Validación](https://github.com/Torcse-S-L/EIEL-Data-Model-Modernization-Lab/actions/workflows/ci.yml/badge.svg)](https://github.com/Torcse-S-L/EIEL-Data-Model-Modernization-Lab/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+
+Plataforma para analizar, rediseñar y validar la modernización del modelo de datos EIEL
+sobre **PostgreSQL/PostGIS**. Incluye esquema legado de referencia, modelo normalizado
+objetivo, capa de compatibilidad y controles de calidad automatizados.
 
 ## Objetivo
 
-Este proyecto materializa una propuesta técnica alineada con el pliego de actualización y optimización del modelo de datos EIEL. Incluye:
+Demostrar un proceso completo de modernización de modelo de datos EIEL aplicable a
+entornos reales, incluyendo:
 
-- inventario del modelo legado y detección de redundancias;
-- diseño de un modelo lógico y físico normalizado;
-- migración reproducible desde un esquema legado hacia un esquema objetivo;
-- vistas de compatibilidad para facilitar la transición de SITMAP y del plugin EIEL de QGIS;
-- controles de calidad de datos, validaciones de integridad e índices espaciales;
-- documentación técnica y plantillas editables para la documentación exigida en oferta.
+- Inventario del modelo legado y detección de redundancias estructurales.
+- Diseño de un modelo lógico y físico normalizado con índices espaciales.
+- Migración reproducible desde el esquema legado hacia el modelo objetivo.
+- Vistas de compatibilidad para preservar las interfaces de SITMAP y el plugin EIEL de QGIS.
+- Controles de calidad de datos y validaciones de integridad automatizables.
+- Trazabilidad completa de cada activo migrado hacia su origen legado.
 
 ## Arquitectura
 
-```mermaid
-graph TB
-	subgraph "Esquema legado"
-		LM[legacy.municipios]
-		LN[legacy.nucleos]
-		LA[legacy.abastecimientos]
-		LS[legacy.saneamientos]
-		LE[legacy.equipamientos]
-	end
-
-	subgraph "Normalizacion"
-		CM[core.municipality]
-		CP[core.population_center]
-		CA[core.asset]
-		CAM[core.asset_metric]
-		CAT[catalog.asset_category]
-	end
-
-	subgraph "Compatibilidad"
-		VA[compat.v_abastecimientos_legacy]
-		VS[compat.v_saneamientos_legacy]
-		VE[compat.v_equipamientos_legacy]
-		VR[compat.v_resumen_municipal]
-	end
-
-	subgraph "Calidad"
-		QC[qa.v_data_quality_checks]
-		QI[qa.v_model_inventory]
-	end
-
-	LM --> CM
-	LN --> CP
-	LA --> CA
-	LS --> CA
-	LE --> CA
-	CAT --> CA
-	CA --> CAM
-
-	CA --> VA
-	CA --> VS
-	CA --> VE
-	CA --> VR
-
-	CM --> QC
-	CP --> QC
-	CA --> QC
-	LM --> QI
-	CA --> QI
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                        Docker Compose                                │
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │                   Esquema legado (legacy.*)                  │    │
+│  │  municipios · nucleos · abastecimientos · saneamientos       │    │
+│  │  equipamientos · v_resumen_municipal                         │    │
+│  └───────────────────────────┬─────────────────────────────────┘    │
+│                              │  migraciones                         │
+│                              ▼                                      │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │               Modelo normalizado (core.* / catalog.*)        │    │
+│  │  municipality · population_center · asset_category           │    │
+│  │  asset · asset_metric                                        │    │
+│  └───────────┬─────────────────────────────────────────────────┘    │
+│              │                           │                          │
+│              ▼                           ▼                          │
+│  ┌────────────────────────┐  ┌───────────────────────────────┐     │
+│  │  Compatibilidad        │  │  Calidad (qa.*)               │     │
+│  │  (compat.*)            │  │  v_data_quality_checks        │     │
+│  │  v_abastecimientos     │  │  v_model_inventory            │     │
+│  │  v_saneamientos        │  └───────────────────────────────┘     │
+│  │  v_equipamientos       │                                        │
+│  │  v_resumen_municipal   │                                        │
+│  └────────────────────────┘                                        │
+│                                                                      │
+│               PostgreSQL/PostGIS :5433                               │
+└──────────────────────────────────────────────────────────────────────┘
 ```
 
-## Inicio rapido
+## Inicio Rápido
 
-### Requisitos previos
+### Requisitos Previos
 
-- Docker Engine 24+
-- Docker Compose v2+
-- 2 GB RAM libres como minimo
-- 1 puerto libre para PostgreSQL local, por defecto `5433`
+- [Docker Engine](https://docs.docker.com/engine/install/) 24+
+- [Docker Compose](https://docs.docker.com/compose/install/) v2+
+- 2 GB de RAM disponible
+- Puerto `5433` libre (PostgreSQL)
 
 ### Despliegue
 
 ```bash
-# 1. Copiar variables de entorno
+# 1. Clonar el repositorio
+git clone https://github.com/Torcse-S-L/EIEL-Data-Model-Modernization-Lab.git
+cd EIEL-Data-Model-Modernization-Lab
+
+# 2. Copiar variables de entorno
 cp .env.example .env
 
-# 2. Levantar la base de datos de laboratorio
+# 3. Levantar la base de datos
 docker compose up -d
 
-# 3. Aplicar el modelo objetivo y las vistas de compatibilidad
+# 4. Aplicar el modelo objetivo y las vistas de compatibilidad
 bash scripts/run_migrations.sh
 
-# 4. Validar el resultado
+# 5. Validar el resultado
 bash tests/test_migration.sh
 ```
 
-En Windows PowerShell también se incluyen scripts nativos:
+En Windows PowerShell:
 
 ```powershell
 Copy-Item .env.example .env
@@ -98,71 +89,79 @@ Copy-Item .env.example .env
 ./tests/test_migration.ps1
 ```
 
-## Validaciones incluidas
+### Verificación
 
-- equivalencia de recuentos entre tablas legadas y vistas de compatibilidad;
-- comprobación de errores bloqueantes de calidad de datos;
-- presencia de índices espaciales en el modelo normalizado;
-- inventario de entidades para trazabilidad de la migración.
-
-## Estructura del proyecto
-
-```text
-.
-|-- docker-compose.yml
-|-- postgres/
-|   |-- init/
-|   |   |-- 01-extensions.sql
-|   |   |-- 02-legacy-schema.sql
-|   |   '-- 03-legacy-sample-data.sql
-|   '-- migrations/
-|       |-- 001_target_model.sql
-|       |-- 002_compatibility_views.sql
-|       '-- 003_quality_checks.sql
-|-- scripts/
-|   |-- bootstrap_lab.sh
-|   |-- bootstrap_lab.ps1
-|   |-- run_migrations.sh
-|   '-- run_migrations.ps1
-|-- tests/
-|   |-- test_migration.sh
-|   '-- test_migration.ps1
-|-- docs/
-|   |-- arquitectura.md
-|   |-- analisis-modelo-actual.md
-|   |-- modelo-datos.md
-|   |-- diccionario-datos.md
-|   |-- migracion-y-compatibilidad.md
-|   '-- operacion-y-mantenimiento.md
-|-- templates/
-|   |-- declaracion-responsable.md
-|   |-- relacion-trabajos.md
-|   |-- memoria-tecnica-licitacion.md
-|   '-- perfil-equipo.md
- '-- .github/workflows/ci.yml
+```bash
+bash tests/test_migration.sh
 ```
 
-## Documentacion tecnica
+## Esquemas
 
-- [Arquitectura](docs/arquitectura.md)
-- [Analisis del modelo actual](docs/analisis-modelo-actual.md)
-- [Modelo de datos objetivo](docs/modelo-datos.md)
-- [Diccionario de datos](docs/diccionario-datos.md)
-- [Migracion y compatibilidad](docs/migracion-y-compatibilidad.md)
-- [Operacion y mantenimiento](docs/operacion-y-mantenimiento.md)
+| Esquema | Función |
+|---------|---------|
+| `legacy.*` | Reproduce el estado actual para análisis y trazabilidad |
+| `catalog.*` | Catálogo controlado de categorías funcionales |
+| `core.*` | Modelo normalizado: municipio, núcleo, activo, métrica |
+| `compat.*` | Vistas con la misma forma que el modelo legado |
+| `qa.*` | Controles de calidad e inventario de entidades |
 
-## Documentacion de oferta
+## Validaciones Incluidas
 
-La carpeta `templates/` contiene plantillas editables para la parte documental de la licitación. Estan redactadas para ser **completadas con datos reales del licitador**, evitando inventar referencias, experiencia o perfiles no acreditables.
+- Equivalencia de recuentos entre tablas legadas y vistas de compatibilidad.
+- Comprobación de errores bloqueantes de calidad de datos.
+- Presencia de índices espaciales en el modelo normalizado.
+- Inventario de entidades para trazabilidad de la migración.
 
-## Estado actual
+## Estructura del Proyecto
 
-El laboratorio ya dispone de:
+```
+├── .github/workflows/ci.yml          # CI: validación automática
+├── docker-compose.yml                # Entorno PostgreSQL/PostGIS
+├── .env.example                      # Variables de entorno (template)
+├── postgres/
+│   ├── init/
+│   │   ├── 01-extensions.sql         # PostGIS y extensiones
+│   │   ├── 02-legacy-schema.sql      # Esquema legado de referencia
+│   │   └── 03-legacy-sample-data.sql # Datos de ejemplo
+│   └── migrations/
+│       ├── 001_target_model.sql      # Modelo normalizado objetivo
+│       ├── 002_compatibility_views.sql # Vistas de compatibilidad
+│       └── 003_quality_checks.sql    # Controles de calidad
+├── scripts/
+│   ├── bootstrap_lab.sh / .ps1       # Inicialización del entorno
+│   └── run_migrations.sh / .ps1      # Aplicación de migraciones
+├── tests/
+│   └── test_migration.sh / .ps1      # Suite de validación
+└── docs/                             # Documentación técnica
+```
 
-- esquema legado con datos de ejemplo;
-- modelo objetivo normalizado;
-- vistas de compatibilidad;
-- controles de calidad e inventario;
-- automatizacion local y CI.
+## Documentación
 
-El siguiente paso natural es adaptar las plantillas y, si se dispone del esquema real EIEL, sustituir el dataset de laboratorio por el inventario real para enriquecer el analisis y el benchmarking.
+- [Arquitectura](docs/arquitectura.md) — Capas, componentes y principios de diseño
+- [Análisis del modelo actual](docs/analisis-modelo-actual.md) — Inventario legado y hallazgos
+- [Modelo de datos objetivo](docs/modelo-datos.md) — Modelo lógico y físico normalizado
+- [Diccionario de datos](docs/diccionario-datos.md) — Tablas, columnas y tipos
+- [Migración y compatibilidad](docs/migracion-y-compatibilidad.md) — Proceso y vistas de transición
+- [Operación y mantenimiento](docs/operacion-y-mantenimiento.md) — Guía operativa
+
+## Puerto
+
+| Servicio | Puerto |
+|----------|--------|
+| PostgreSQL/PostGIS | 5433 |
+
+## Tecnologías
+
+| Componente | Versión | Función |
+|------------|---------|---------|
+| PostgreSQL | 16 | Motor de base de datos relacional |
+| PostGIS | 3.4 | Extensión de datos espaciales |
+| Docker Compose | v2+ | Orquestación del entorno de laboratorio |
+
+## Licencia
+
+Este proyecto está licenciado bajo [Apache License 2.0](LICENSE).
+
+---
+
+Desarrollado por [Torcse S.L.](https://github.com/Torcse-S-L)
